@@ -4,25 +4,21 @@ const { $jsonld, memoizeOne } = require("@metascraper/helpers");
 const { toPriceFormat, getHostname } = require("./helpers");
 
 const jsonLd = memoizeOne(($) => {
-  let jsonld;
   try {
-    jsonld = JSON.parse($('script[type="application/ld+json"]').html());
+    const jsonld = JSON.parse($('script[type="application/ld+json"]').html());
+    return jsonld;
   } catch(e) {
-    console.warn('Caught error while parsing jsonld');
-    console.error(e);
+    return undefined;
   }
-  return jsonld;
 });
 
 const jsonLdGraph = memoizeOne(($) => {
-  let jsonld;
   try {
-    jsonld = JSON.parse($('script[type="application/ld+json"]').html());
+    const jsonld = JSON.parse($('script[type="application/ld+json"]').html());
+    return jsonld && jsonld["@graph"];
   } catch(e) {
-    console.warn('Caught error while parsing jsonld graph');
-    console.error(e);
+    return undefined;
   }
-  return jsonld && jsonld["@graph"];
 });
 
 //@graph { @type=Product }
